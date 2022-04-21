@@ -1,7 +1,9 @@
 import { airlines, flights_jan_01_2008 } from "./airline-data.js";
 
+//function for getting the optimized data
 function saprateByTime(flightCode) {
   const finalObject = flights_jan_01_2008
+    //here we are filtering all the flights that are of a same airline
     .filter((flight) => {
       if (
         flight != null &&
@@ -12,6 +14,7 @@ function saprateByTime(flightCode) {
         return true;
       }
     })
+    // here we are calculating total flights of that airline in diffrent hours
     .reduce((acc, curr) => {
       if (acc[curr.time.substring(0, 2)]) {
         acc[curr.time.substring(0, 2)] = ++acc[curr.time.substring(0, 2)];
@@ -24,15 +27,16 @@ function saprateByTime(flightCode) {
   mainArray.push(finalObject);
 }
 
+//this function adds the flights names in the UI
 function addFlightNames(flightCode) {
   let data = airlines[`${flightCode}`];
   document.getElementById(`${flightCode}`).innerHTML = data;
 }
 
-function addDetailsInCells(index) {
-  let flightCode = keys[index];
+//this function fills the data of specific flights in diffrent hours
+function addDetailsInCells(index, flightCode) {
   for (var i = 1; i <= 24; i++) {
-    var detail = mainArray[index];
+    let detail = mainArray[index];
     let data;
     if (i <= 10) {
       data = detail[`0${i - 1}`];
@@ -60,5 +64,5 @@ console.log(mainArray);
 for (var i = 0; i <= 11; i++) {
   let flightCode = keys[i];
   addFlightNames(flightCode);
-  addDetailsInCells(i);
+  addDetailsInCells(i, flightCode);
 }
